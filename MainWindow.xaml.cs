@@ -16,6 +16,8 @@ namespace txuribeltz
         public LoginWindow()
         {
             InitializeComponent();
+            //zerbitzarira konektatuko gara lehenengo
+            zerbitzariraKonektatu();
         }
         /*
          * Sisteman logeatuko gara hemendik
@@ -35,13 +37,12 @@ namespace txuribeltz
                     txt_erroreak.Text = "Erabiltzaile edo pasahitza hutsik daude.";
                     return;
                 }
-                
             }
             catch (Exception ex)
             {
-                // erabiltzailea sortzeko menua eman
-
                 txt_erroreak.Text = $"Sortu erabiltzailea, ez dago {txtUsuario} erabiltzailerik";
+                txtUsuario.Clear();
+                txtPassword.Clear();
             }
         }
 
@@ -62,6 +63,15 @@ namespace txuribeltz
             catch (Exception ex)
             {
                 txt_erroreak.Text = $"Ezin izan da erabiltzailerik sortu";
+            }
+        }
+        //enter sakatuz login egin ahal izateko
+        //XAML fitxategian jarri PreviewKeyDown="Window_PreviewKeyDown"
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                login(this, new RoutedEventArgs());
             }
         }
     }

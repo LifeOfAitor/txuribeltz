@@ -24,6 +24,7 @@ namespace txuribeltz
             InitializeComponent();
         }
 
+        // erabiltzailea sortu botoia sakatuz
         private void btnRegistratu_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -39,7 +40,7 @@ namespace txuribeltz
                     txt_erroreak.Text = "Pasahitzak ez datoz bat.";
                     return;
                 }
-                // erabiltzailea sortu
+                // erabiltzailea sortuta!
                 MessageBox.Show("Erabiltzailea ongi erregistratu da.");
                 Close();
             }
@@ -50,9 +51,20 @@ namespace txuribeltz
             }
         }
 
+        // lehioa itxi atzera botoia sakatuz
         private void btnAtzera_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        //enter sakatuz erabiltzailea sortu ahal izateko
+        //XAML fitxategian jarri PreviewKeyDown="Window_PreviewKeyDown"
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                btnRegistratu_Click(this, new RoutedEventArgs());
+            }
         }
     }
 }
