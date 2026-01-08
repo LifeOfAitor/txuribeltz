@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,9 +21,12 @@ namespace txuribeltz
     /// </summary>
     public partial class SingUp : Window
     {
-        public SingUp()
+        private StreamWriter writer;
+
+        public SingUp(StreamWriter writer)
         {
             InitializeComponent();
+            this.writer = writer;
         }
 
         // erabiltzailea sortu botoia sakatuz
@@ -40,6 +45,11 @@ namespace txuribeltz
                     txt_erroreak.Text = "Pasahitzak ez datoz bat.";
                     return;
                 }
+
+                // Send SIGNUP message to server
+                string message = $"SIGNUP:{txtErabiltzailea.Text}:{txtPasahitza.Password}";
+                writer.WriteLine(message);
+
                 // erabiltzailea sortuta!
                 MessageBox.Show("Erabiltzailea ongi erregistratu da.");
                 Close();

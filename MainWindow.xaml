@@ -49,6 +49,9 @@
         <!-- Erroreak agertuko dira hemen, baldin badaude -->
         <TextBlock x:Name="txt_erroreak" Grid.Row="2" Text="" 
                    HorizontalAlignment="Center" 
-                   FontSize="12" Foreground="PaleVioletRed" Margin="0,20,0,0"/>
+                   FontSize="12" Foreground="PaleVioletRed" Margin="0,5,0,0"/>
+        <TextBlock x:Name="txt_mezuak" Grid.Row="2" Text="" 
+                   HorizontalAlignment="Center" 
+                   FontSize="12" Foreground="ForestGreen" Margin="0,5,0,0"/>
     </Grid>
 </Window>

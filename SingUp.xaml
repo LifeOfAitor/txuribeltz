@@ -35,7 +35,7 @@
             <TextBlock Text="PASAHITZA:" Foreground="White" FontSize="14"/>
             <PasswordBox x:Name="txtPasahitza" Margin="0,5,0,15" Height="30" FontSize="14"/>
 
-            <TextBlock Text="PASAHITZA BERRETSI:" Foreground="White" FontSize="14"/>
+            <TextBlock Text="PASAHITZA ERREPIKATU:" Foreground="White" FontSize="14"/>
             <PasswordBox x:Name="txtPasahitza2" Margin="0,5,0,25" Height="30" FontSize="14"/>
 
             <Button x:Name="btnRegistratu" Content="ERREGISTRATU" 
