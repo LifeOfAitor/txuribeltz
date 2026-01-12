@@ -19,6 +19,10 @@ namespace txuribeltz
         private StreamWriter writer;
         private StreamReader reader;
         private NetworkStream ns;
+        private Thread listenerThread;
+        private bool shouldListen = true;
+        private bool logeatuta = false;
+
         public LoginWindow()
         {
             InitializeComponent();
@@ -41,34 +45,37 @@ namespace txuribeltz
                 txt_mezuak.Text += "Konektatuta zerbitzarira.\n";
 
                 // Lehen konexioan zerbitzarira mezua bidali eta erantzuna jasotzeko.
-                Thread t = new Thread(() =>
+                listenerThread = new Thread(() =>
                 {
                     try
                     {
                         string line;
-                        while ((line = reader.ReadLine()) != null)
+                        while (shouldListen && (line = reader.ReadLine()) != null)
                         {
                             Dispatcher.Invoke(() =>
                             {
-                                txt_mezuak.Text += "Server-etik: " + line + "\n";
                                 
                                 // Process authentication responses
                                 if (line.StartsWith("LOGIN_OK"))
                                 {
+                                    logeatuta = true;
                                     string[] parts = line.Split(':');
                                     string userType = parts.Length > 1 ? parts[1] : "user";
                                     
                                     txt_mezuak.Text = "Login arrakastatsua!";
                                     
+                                    // Stop listening in LoginWindow
+                                    shouldListen = false;
+                                    
                                     // Ireki bakoitzaren lehioa
                                     if (userType == "admin")
                                     {
-                                        AdminWindow adminWin = new AdminWindow();
+                                        AdminWindow adminWin = new AdminWindow(reader, writer);
                                         adminWin.Show();
                                     }
                                     else
                                     {
-                                        // UserWindow userWin = new UserWindow();
+                                        // UserWindow userWin = new UserWindow(reader, writer);
                                         // userWin.Show();
                                     }
                                     
@@ -89,14 +96,17 @@ namespace txuribeltz
                     }
                     catch (Exception ex)
                     {
-                        Dispatcher.Invoke(() =>
+                        if (shouldListen)
                         {
-                            txt_mezuak.Text += "Bezeroa deskonektatua\n";
-                        });
+                            Dispatcher.Invoke(() =>
+                            {
+                                txt_mezuak.Text += "Bezeroa deskonektatua\n";
+                            });
+                        }
                     }
                 });
-                t.IsBackground = true;
-                t.Start();
+                listenerThread.IsBackground = true;
+                listenerThread.Start();
                 
             }
             catch (Exception ex)
@@ -106,16 +116,23 @@ namespace txuribeltz
             }
         }
 
+        //lehioa ixtean zerbitzaritik deskonektatuko da bezeroa baina bakarrik logeatu gabe dagoenean
         private void zerbitzaritikDeskonektatu()
         {
             //Galdera ikurrak null ez den egiaztatzen du
             try
             {
-                reader?.Close();
-                writer?.Close();
-                ns?.Close();
-                if (client?.Connected == true)
-                    client.Close();
+                if (!logeatuta)
+                {
+                    shouldListen = false;
+                    writer.WriteLine("DISCONNECT");
+                    reader?.Close();
+                    writer?.Close();
+                    ns?.Close();
+                    if (client?.Connected == true)
+                        client.Close();
+                }
+                    
             }
             catch (Exception ex)
             {
@@ -144,10 +161,13 @@ namespace txuribeltz
                 }
 
                 // Zerbitzariari bidali log in egiteko mezua
+                /*
+                 *Zerbitzariak konprobnatuko du erabiltzaile mota eta horren arabera admin edo user bezala konektatuko da
+                 */
                 string message = $"LOGIN:{txtUsuario.Text}:{txtPassword.Password}";
                 writer.WriteLine(message);
                 txt_erroreak.Text = "";
-                txt_mezuak.Text = "Autentifikazioa bidaltzen...";
+                txt_mezuak.Text = "";
             }
             catch (Exception ex)
             {
@@ -184,6 +204,11 @@ namespace txuribeltz
             {
                 login(this, new RoutedEventArgs());
             }
+        }
+
+        private void itxiAplikazioa(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            zerbitzaritikDeskonektatu();
         }
     }
 }

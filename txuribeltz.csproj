@@ -8,4 +8,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\txuribeltz_server\txuribeltz_server.csproj" />
+  </ItemGroup>
+
 </Project>

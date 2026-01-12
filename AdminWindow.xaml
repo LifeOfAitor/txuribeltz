@@ -8,6 +8,7 @@
         Title="Administrazio Panela" Height="600" Width="900"
         WindowStartupLocation="CenterScreen"
         Background="#F5F5F5">
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -45,7 +46,6 @@
                              HeadersVisibility="Column"
                              CanUserAddRows="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                             <DataGridTextColumn Header="Erabiltzailea" Binding="{Binding username}" Width="*"/>
                             <DataGridTextColumn Header="Pasahitza" Binding="{Binding password}" Width="*"/>
                             <DataGridCheckBoxColumn Header="Mota" Binding="{Binding erabiltzailemota}" Width="80"/>
@@ -57,22 +57,13 @@
                                Orientation="Horizontal" 
                                HorizontalAlignment="Right"
                                Margin="0,15,0,0">
-                        <Button x:Name="btnViewUser"
-                                Content="Ikusi" 
-                                Width="100" 
-                                Height="35"
-                                Margin="0,0,10,0"
-                                Background="#2196F3"
-                                Foreground="White"
-                                FontWeight="Bold"
-                                Cursor="Hand"/>
 
                         <Button x:Name="btnChangePassword"
                                 Content="Pasahitza Aldatu" 
                                 Width="130" 
                                 Height="35"
                                 Margin="0,0,10,0"
-                                Background="#FF9800"
+                                Background="#FF00A86B"
                                 Foreground="White"
                                 FontWeight="Bold"
                                 Cursor="Hand"/>

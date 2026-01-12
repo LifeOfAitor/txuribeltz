@@ -46,12 +46,9 @@ namespace txuribeltz
                     return;
                 }
 
-                // Send SIGNUP message to server
+                // bidali signup zerbitzarira
                 string message = $"SIGNUP:{txtErabiltzailea.Text}:{txtPasahitza.Password}";
                 writer.WriteLine(message);
-
-                // erabiltzailea sortuta!
-                MessageBox.Show("Erabiltzailea ongi erregistratu da.");
                 Close();
             }
             catch (Exception ex)
